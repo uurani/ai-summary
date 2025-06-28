@@ -1,0 +1,494 @@
+/* AI摘要前端显示样式 - 参考Core AI Power样式 */
+
+.ai-summary-container {
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    background: #f7f7f9;
+    box-shadow: inset 0 0 4px rgba(126, 134, 153, 0.1);
+    padding-top: 50px; /* 为突出的头像留空间 */
+}
+
+/* 机器人头像 - 固定大小，所有设备一致 */
+.ai-summary-bot-section {
+    position: absolute;
+    width: 80px;  /* 固定宽度 */
+    height: 80px; /* 固定高度 */
+    background: #fff;
+    border-radius: 50%;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%); /* 居中显示 */
+    padding: 5px;
+    z-index: 10;
+}
+
+.ai-summary-main-bot {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #f7f7f9;
+    box-shadow: inset 0 -1px 6px 2px rgba(126, 134, 153, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.ai-summary-main-bot svg {
+    width: 65px;  /* 固定SVG宽度 */
+    height: 54px; /* 固定SVG高度 */
+    position: relative;
+    top: 5px;
+}
+
+/* 眼睛样式 - 完美居中，跨设备兼容 */
+.ai-summary-main-bot .bot-eye-left {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    z-index: 20;
+    left: 50%;
+    top: 50%;
+    transform: translate(-15px, -6px); /* 左眼位置优化 */
+    pointer-events: none;
+}
+
+.ai-summary-main-bot .bot-eye-right {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    z-index: 20;
+    left: 50%;
+    top: 50%;
+    transform: translate(9px, -6px); /* 右眼位置优化 */
+    pointer-events: none;
+}
+
+
+.ai-summary-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.ai-summary-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.ai-summary-title-section {
+    flex: 1;
+}
+
+.ai-summary-title {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 16px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.ai-summary-subtitle {
+    font-size: 12px;
+    color: #828a9d;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.ai-summary-brand {
+    display: flex;
+    align-items: center;
+}
+
+.ai-summary-brand a {
+    text-decoration: none;
+    color: #272c38 !important;
+    font-size: 12px;
+}
+
+/* 内容区域 */
+.ai-summary-content {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.ai-summary-text {
+    color: #4a5568;
+    font-size: 14px;
+    line-height: 1.65;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-weight: 400;
+}
+
+/* 打字机动画效果 */
+.ai-summary-text.typing::after {
+    content: '|';
+    color: #4299e1;
+    animation: blink-cursor 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink-cursor {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* 底部操作区域 */
+.ai-summary-footer {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.ai-summary-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* 关键词区域 */
+.ai-summary-keywords-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ai-summary-keywords-title {
+    color: #64748b !important;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.ai-summary-keywords-container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* 关键词标签样式 */
+.ai-summary-keyword-tag {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.ai-summary-keyword-tag:hover {
+    background: #e2e8f0;
+    border-color: #cbd5e0;
+    transform: translateY(-1px);
+}
+
+/* 保留旧的按钮样式作为备用 */
+.ai-summary-btn {
+    background: #272C38;
+    display: inline-block;
+    border-radius: 15px;
+    padding: 2px 10px;
+    font-size: 12px;
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.ai-summary-btn:hover {
+    color: #fff !important;
+    background: #1a202c;
+}
+
+.ai-summary-settings {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ai-summary-settings-btn {
+    background: transparent;
+    color: #a0aec0;
+    border: none;
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+}
+
+.ai-summary-settings-btn:hover {
+    background: #edf2f7;
+    color: #718096;
+    text-decoration: none;
+    transform: rotate(90deg);
+}
+
+.ai-summary-link {
+    color: #7e8699;
+    text-decoration: none;
+    font-size: 12px;
+    transition: color 0.3s ease;
+}
+
+.ai-summary-link:hover {
+    color: #718096;
+}
+
+/* 加载状态 */
+.ai-summary-loading {
+    padding: 32px 20px;
+    text-align: center;
+    color: #718096;
+}
+
+.ai-summary-loading .loading-dots {
+    display: inline-block;
+    position: relative;
+    width: 50px;
+    height: 10px;
+    margin-bottom: 12px;
+}
+
+.ai-summary-loading .loading-dots div {
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #4299e1;
+    animation: loading-bounce 1.4s infinite ease-in-out both;
+}
+
+.ai-summary-loading .loading-dots div:nth-child(1) {
+    left: 8px;
+    animation-delay: -0.32s;
+}
+
+.ai-summary-loading .loading-dots div:nth-child(2) {
+    left: 20px;
+    animation-delay: -0.16s;
+}
+
+.ai-summary-loading .loading-dots div:nth-child(3) {
+    left: 32px;
+    animation-delay: 0;
+}
+
+@keyframes loading-bounce {
+    0%, 80%, 100% {
+        transform: scale(0.6);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* 错误状态 */
+.ai-summary-error {
+    background: #fed7d7;
+    color: #9b2c2c;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid #feb2b2;
+    border-radius: 6px;
+    margin: 16px 0;
+}
+
+.ai-summary-error-icon {
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.ai-summary-error-text {
+    font-size: 13px;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* 响应式设计 */
+@media (max-width: 710px) {
+    .ai-summary-container {
+        padding: 10px;
+    }
+    
+    .ai-summary-title {
+        font-size: 15px;
+    }
+    
+    .ai-summary-subtitle {
+        font-size: 11px;
+    }
+    
+    .ai-summary-brand a {
+        font-size: 9px;
+    }
+    
+    /* 机器人头像在移动端保持相同大小，只调整位置 */
+    .ai-summary-bot-section {
+        /* 大小保持不变，只确保居中 */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .ai-summary-container {
+        padding-top: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ai-summary-container {
+        padding: 8px;
+        margin: 10px 0;
+        padding-top: 35px;
+    }
+    
+    .ai-summary-title {
+        font-size: 14px;
+    }
+    
+    .ai-summary-subtitle {
+        font-size: 12px !important;
+    }
+    
+    .ai-summary-brand a {
+        font-size: 11px;
+    }
+    
+    /* 小屏幕下机器人头像保持相同大小，只调整位置 */
+    .ai-summary-bot-section {
+        /* 大小保持不变，只确保居中 */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .ai-summary-keyword-tag {
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 10px;
+    }
+    
+    .ai-summary-actions {
+        gap: 6px;
+        justify-content: flex-start;
+    }
+    
+    .ai-summary-footer {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+}
+
+/* 深色主题适配 */
+@media (prefers-color-scheme: dark) {
+    .ai-summary-container {
+        background: #1a202c;
+        color: #e2e8f0;
+    }
+    
+    .ai-summary-content {
+        background: #2d3748;
+    }
+    
+    .ai-summary-title {
+        color: #f7fafc;
+    }
+    
+    .ai-summary-subtitle {
+        color: #a0aec0;
+    }
+    
+    .ai-summary-text {
+        color: #e2e8f0;
+    }
+    
+    .ai-summary-brand a {
+        color: #a0aec0;
+    }
+    
+    .ai-summary-btn {
+        background: #f7fafc;
+        color: #1a202c;
+    }
+    
+    .ai-summary-btn:hover {
+        background: #e2e8f0;
+        color: #1a202c !important;
+    }
+}
+
+/* 无障碍支持 */
+@media (prefers-reduced-motion: reduce) {
+    
+    .ai-summary-text.typing::after {
+        animation: none;
+        opacity: 1;
+    }
+    
+    .ai-summary-settings-btn:hover {
+        transform: none;
+    }
+    
+    .ai-summary-loading .loading-dots div {
+        animation: none;
+        opacity: 0.6;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    .ai-summary-container {
+        background: white !important;
+        color: black !important;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    .ai-summary-content {
+        background: white !important;
+    }
+    
+    .ai-summary-title,
+    .ai-summary-text {
+        color: black !important;
+    }
+    
+    .ai-summary-footer,
+    .ai-summary-bot-section {
+        display: none;
+    }
+}
+
+/* 覆盖文章内容段落样式 */
+.entry-content p {
+    margin-bottom: 10px !important;
+}
+
