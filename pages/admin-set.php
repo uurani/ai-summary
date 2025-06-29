@@ -5,7 +5,7 @@
             <p>为您的WordPress网站提供多种AI服务支持，轻松生成高质量内容摘要</p>
         </div>
         <div class="ai-summary-version">
-            <span class="version-badge">v1.0.0</span>
+            <span class="version-badge" id="header-version">加载中...</span>
         </div>
     </div>
 
@@ -16,6 +16,7 @@
             <button class="tab-button" data-tab="summary">摘要设置</button>
             <button class="tab-button" data-tab="seo">SEO设置</button>
             <button class="tab-button" data-tab="posts">文章管理</button>
+            <button class="tab-button" data-tab="update">插件更新</button>
             <button class="tab-button" data-tab="about">关于</button>
         </nav>
 
@@ -42,17 +43,6 @@
                         </label>
                     </div>
                     <p class="card-desc">为摘要添加打字机动画效果</p>
-                </div>
-
-                <div class="setting-card">
-                    <div class="card-header">
-                        <h3>显示"看其他"按钮</h3>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="ai_summary_see_other_btn">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <p class="card-desc">在摘要下方显示推荐其他文章的按钮</p>
                 </div>
             </div>
         </div>
@@ -182,16 +172,6 @@
                     </div>
                     <p class="card-desc">建议设置在100-300字之间，过短可能信息不全，过长影响阅读体验</p>
                 </div>
-
-                <div class="setting-card">
-                    <div class="card-header">
-                        <h3>反馈链接</h3>
-                    </div>
-                    <div class="input-group">
-                        <input type="url" id="ai_summary_feedback_url" placeholder="https://example.com/feedback">
-                    </div>
-                    <p class="card-desc">用户可通过此链接提供摘要质量反馈（可选）</p>
-                </div>
             </div>
         </div>
 
@@ -249,6 +229,112 @@
                     <div class="input-group">
                         <input type="number" id="ai_seo_keywords_length" min="5" max="15" placeholder="10">
                         <span class="input-suffix">个</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 插件更新 -->
+        <div class="tab-content" id="update-tab">
+            <div class="update-management">
+                <div class="update-header">
+                    <h3>插件更新管理</h3>
+                    <p>检查并更新到最新版本，获得更多功能和修复。</p>
+                </div>
+                
+                <div class="settings-grid">
+                    <!-- 更新检查 -->
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <h3>版本检查</h3>
+                        </div>
+                        <div class="update-info" id="update-info">
+                            <div class="update-status">
+                                <div class="version-info">
+                                    <span class="current-version">当前版本：<strong id="current-version">加载中...</strong></span>
+                                    <span class="latest-version" id="latest-version-container" style="display: none;">
+                                        最新版本：<strong id="latest-version">-</strong>
+                                    </span>
+                                </div>
+                                <div class="update-status-text" id="update-status-text">
+                                    点击下方按钮检查更新
+                                </div>
+                            </div>
+                            
+                            <div class="update-actions">
+                                <button class="btn-update-check" id="check-update-btn">
+                                    <span class="btn-text">检查更新</span>
+                                    <span class="btn-loading" style="display: none;">检查中...</span>
+                                </button>
+                                <button class="btn-update-start" id="start-update-btn" style="display: none;">
+                                    <span class="btn-text">立即更新</span>
+                                    <span class="btn-loading" style="display: none;">更新中...</span>
+                                </button>
+                            </div>
+                            
+                            <div class="update-progress" id="update-progress" style="display: none;">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progress-fill"></div>
+                                </div>
+                                <div class="progress-text" id="progress-text">准备中...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 自动更新设置 -->
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <h3>自动更新设置</h3>
+                        </div>
+                        <div class="setting-row">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="auto_check_update">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div class="setting-desc">
+                                <h4>启用自动检查更新</h4>
+                                <p>每12小时自动检查一次更新，有新版本时在管理页面显示提醒</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 更新说明 -->
+                    <div class="setting-card update-notes">
+                        <div class="card-header">
+                            <h3>更新说明</h3>
+                        </div>
+                        <div class="update-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">♻️</span>
+                                <div>
+                                    <h4>自动更新</h4>
+                                    <p>一键更新到最新版本，无需手动下载</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">🔒</span>
+                                <div>
+                                    <h4>安全检查</h4>
+                                    <p>文件完整性验证，确保更新安全可靠</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">🕧</span>
+                                <div>
+                                    <h4>定时检查</h4>
+                                    <p>自动检查新版本，及时获得最新功能</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="update-warning">
+                            <p><strong>注意事项：</strong></p>
+                            <ul>
+                                <li>更新前请确保网络连接稳定</li>
+                                <li>更新过程中请勿关闭页面</li>
+                                <li>建议在网站维护时间进行更新</li>
+                                <li>如遇问题可访问官网获取帮助</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -346,9 +432,10 @@
 
 
                     <div class="plugin-info">
-                        <p><strong>版本:</strong> 1.0.0</p>
+                        <p><strong>版本:</strong> <span id="about-current-version">加载中...</span></p>
                         <p><strong>作者:</strong> muxui</p>
                         <p><strong>网站:</strong> <a href="https://muxui.com" target="_blank">muxui.com</a></p>
+                        <p><strong>更新:</strong> 请前往"插件更新"页面检查最新版本</p>
                     </div>
                 </div>
             </div>

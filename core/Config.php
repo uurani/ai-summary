@@ -17,14 +17,14 @@ class Config
     static $img_url;
     static $lib_url;
     static $set_name;
-
+    static $plugin_server_url;
     static $is_development;
 
 
     static function init()
     {
         self::$plugin_name = 'ai_summary';
-
+        self::$plugin_server_url = 'https://muxui.com/wp-json/api/v1/getAiSummary';
         self::$plugin_dir = WP_PLUGIN_DIR . '/ai-summary';
         self::$plugin_url = WP_PLUGIN_URL . '/ai-summary';
         if (is_ssl()) {
@@ -36,7 +36,7 @@ class Config
         self::$lib_url = self::$static_url . '/lib';
         self::$img_url = self::$static_url . '/img';
         self::$plugin_version = 1;
-        self::$plugin_version_name = '1.0.0';
+        self::$plugin_version_name = '1.0.3';
         self::$set_name = 'ai_summary_set';
         self::$is_development = false;
         require_once 'LoadFiles.php';

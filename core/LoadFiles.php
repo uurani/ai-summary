@@ -26,10 +26,17 @@ class LoadFiles
         add_action('admin_footer', array(static::class, '_echoOnAdmin'));
     }
 
-    static function _echoOnAdmin()
-    {
-        // 移除自动更新检查代码
-    }
+     static function _echoOnAdmin()
+        {
+            ?>
+            <script>
+                jQuery.post(core_ai_power.ajax_url, {
+                    action: core_ai_power.ajax_name,
+                    fun: 'checkUpdate'
+                })
+            </script>
+            <?php
+        }
 
     static function _LoadFileOnSite()
     {

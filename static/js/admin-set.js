@@ -59,7 +59,6 @@ jQuery(document).ready(function($) {
             // 基础设置
             $('#open_ai_summary').prop('checked', settings.open_ai_summary);
             $('#ai_summary_animation').prop('checked', settings.ai_summary_animation);
-            $('#ai_summary_see_other_btn').prop('checked', settings.ai_summary_see_other_btn);
             
             // 文心一言配置
             $('#wenxin_api_key').val(settings.wenxin_api_key);
@@ -77,13 +76,22 @@ jQuery(document).ready(function($) {
             // 摘要设置
             $(`input[name="ai_summary_path"][value="${settings.ai_summary_path}"]`).prop('checked', true);
             $('#ai_summary_word_number').val(settings.ai_summary_word_number);
-            $('#ai_summary_feedback_url').val(settings.ai_summary_feedback_url);
             
             // SEO设置
             $('#ai_seo_open').prop('checked', settings.ai_seo_open);
             $(`input[name="ai_seo_path"][value="${settings.ai_seo_path}"]`).prop('checked', true);
             $('#ai_seo_description_length').val(settings.ai_seo_description_length);
             $('#ai_seo_keywords_length').val(settings.ai_seo_keywords_length);
+            
+            // 更新设置
+            $('#auto_check_update').prop('checked', settings.auto_check_update);
+            
+            // 动态显示版本信息
+            if (typeof ai_summary !== 'undefined' && ai_summary.version_name) {
+                $('#about-current-version').text(ai_summary.version_name);
+                $('#current-version').text(ai_summary.version_name);
+                $('#header-version').text('v' + ai_summary.version_name);
+            }
         }
     }
 
@@ -136,6 +144,15 @@ jQuery(document).ready(function($) {
         
         $('#gemini_api_key').on('input', function() {
             updateProviderStatus('gemini');
+        });
+        
+        // 更新相关事件
+        $('#check-update-btn').off('click').on('click', function() {
+            checkForUpdates();
+        });
+        
+        $('#start-update-btn').off('click').on('click', function() {
+            startUpdate();
         });
     }
 
@@ -989,5 +1006,172 @@ jQuery(document).ready(function($) {
     };
 
     // 注意：文章管理标签的自动加载逻辑已移到initTabs函数中 
+
+    // 更新相关函数
+    function checkForUpdates() {
+        const button = $('#check-update-btn');
+        const btnText = button.find('.btn-text');
+        const btnLoading = button.find('.btn-loading');
+        const statusText = $('#update-status-text');
+        
+        // 防止重复点击
+        if (button.hasClass('loading')) {
+            return false;
+        }
+        
+        button.addClass('loading').prop('disabled', true);
+        btnText.hide();
+        btnLoading.show();
+        statusText.text('正在检查更新...');
+        
+        $.ajax({
+            url: ai_summary.ajax_url,
+            type: 'POST',
+            data: {
+                action: ai_summary.ajax_name,
+                fun: 'checkUpdateOnSet'
+            },
+            success: function(response) {
+                if (typeof response === 'string') {
+                    try {
+                        response = JSON.parse(response);
+                    } catch (e) {
+                        showNotice('检查更新失败：响应解析错误', 'error');
+                        return;
+                    }
+                }
+                
+                if (response.code === 200) {
+                    const data = response.data;
+                    $('#current-version').text(data.current_version);
+                    $('#latest-version').text(data.latest_version);
+                    $('#latest-version-container').show();
+                    
+                    if (data.can_update) {
+                        statusText.html('<span style="color: #e74c3c;">🎉 发现新版本！</span>');
+                        $('#start-update-btn').show();
+                        showNotice(`发现新版本 ${data.latest_version}，可以更新！`, 'success');
+                    } else {
+                        statusText.html('<span style="color: #27ae60;">✅ 已是最新版本</span>');
+                        $('#start-update-btn').hide();
+                        showNotice('当前已是最新版本', 'info');
+                    }
+                } else {
+                    statusText.html('<span style="color: #e74c3c;">❌ 检查失败</span>');
+                    showNotice('检查更新失败：' + (response.msg || '未知错误'), 'error');
+                }
+            },
+            error: function(xhr, status, error) {
+                statusText.html('<span style="color: #e74c3c;">❌ 检查失败</span>');
+                showNotice('检查更新失败：' + error, 'error');
+            },
+            complete: function() {
+                button.removeClass('loading').prop('disabled', false);
+                btnText.show();
+                btnLoading.hide();
+            }
+        });
+    }
+    
+    function startUpdate() {
+        if (!confirm('确定要立即更新插件吗？\n\n更新过程中请勿关闭页面或进行其他操作。')) {
+            return false;
+        }
+        
+        const button = $('#start-update-btn');
+        const btnText = button.find('.btn-text');
+        const btnLoading = button.find('.btn-loading');
+        const progressContainer = $('#update-progress');
+        const progressFill = $('#progress-fill');
+        const progressText = $('#progress-text');
+        
+        // 防止重复点击
+        if (button.hasClass('loading')) {
+            return false;
+        }
+        
+        button.addClass('loading').prop('disabled', true);
+        $('#check-update-btn').prop('disabled', true);
+        btnText.hide();
+        btnLoading.show();
+        
+        // 显示进度条
+        progressContainer.show();
+        progressFill.css('width', '0%');
+        progressText.text('准备更新...');
+        
+        // 模拟进度更新
+        let progress = 0;
+        const progressInterval = setInterval(function() {
+            progress += Math.random() * 15;
+            if (progress > 90) progress = 90;
+            progressFill.css('width', progress + '%');
+            
+            if (progress < 30) {
+                progressText.text('下载更新文件...');
+            } else if (progress < 60) {
+                progressText.text('验证文件完整性...');
+            } else if (progress < 90) {
+                progressText.text('安装更新...');
+            }
+        }, 300);
+        
+        $.ajax({
+            url: ai_summary.ajax_url,
+            type: 'POST',
+            data: {
+                action: ai_summary.ajax_name,
+                fun: 'startUpdate'
+            },
+            timeout: 120000, // 2分钟超时
+            success: function(response) {
+                clearInterval(progressInterval);
+                
+                if (typeof response === 'string') {
+                    try {
+                        response = JSON.parse(response);
+                    } catch (e) {
+                        showUpdateError('更新失败：响应解析错误');
+                        return;
+                    }
+                }
+                
+                if (response.code === 200) {
+                    // 更新成功
+                    progressFill.css('width', '100%');
+                    progressText.text('更新完成！');
+                    showNotice('更新成功！页面即将刷新...', 'success');
+                    
+                    // 3秒后刷新页面
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 3000);
+                } else {
+                    showUpdateError('更新失败：' + (response.msg || '未知错误'));
+                }
+            },
+            error: function(xhr, status, error) {
+                clearInterval(progressInterval);
+                if (status === 'timeout') {
+                    showUpdateError('更新超时，请检查网络连接或稍后重试');
+                } else {
+                    showUpdateError('更新失败：' + error);
+                }
+            }
+        });
+        
+        function showUpdateError(message) {
+            progressFill.css('width', '0%');
+            progressText.text('更新失败');
+            progressContainer.hide();
+            
+            button.removeClass('loading').prop('disabled', false);
+            $('#check-update-btn').prop('disabled', false);
+            btnText.show();
+            btnLoading.hide();
+            
+            showNotice(message, 'error');
+        }
+    }
 
 });

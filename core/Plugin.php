@@ -15,6 +15,107 @@ class Plugin
             add_action('save_post', [static::class, 'savePostMeta']);
             add_filter('the_content', [static::class, 'addAISummaryTool']);
         }
+        
+        // 注册更新相关钩子
+        static::initUpdateHooks();
+    }
+    
+    static function initUpdateHooks()
+    {
+        // 注册激活钩子
+        register_activation_hook(Config::$plugin_dir . '/index.php', [static::class, 'scheduleUpdateCheck']);
+        
+        // 注册停用钩子
+        register_deactivation_hook(Config::$plugin_dir . '/index.php', [static::class, 'clearUpdateSchedule']);
+        
+        // 注册定时检查更新的动作
+        add_action('ai_summary_check_update_cron', [static::class, 'autoCheckUpdate']);
+        
+        // 在插件加载时检查是否需要安排定时任务
+        add_action('init', [static::class, 'maybeScheduleUpdateCheck']);
+        
+        // 管理员通知
+        add_action('admin_notices', [static::class, 'showUpdateNotice']);
+    }
+    
+    static function scheduleUpdateCheck()
+    {
+        if (!wp_next_scheduled('ai_summary_check_update_cron')) {
+            wp_schedule_event(time(), 'twicedaily', 'ai_summary_check_update_cron');
+        }
+    }
+    
+    static function clearUpdateSchedule()
+    {
+        wp_clear_scheduled_hook('ai_summary_check_update_cron');
+    }
+    
+    static function maybeScheduleUpdateCheck()
+    {
+        global $ai_summary_set;
+        $ai_summary_set = Options::getOptions();
+        
+        // 只有在启用自动检查时才安排定时任务
+        if ($ai_summary_set['auto_check_update']) {
+            if (!wp_next_scheduled('ai_summary_check_update_cron')) {
+                wp_schedule_event(time(), 'twicedaily', 'ai_summary_check_update_cron');
+            }
+        } else {
+            // 如果关闭了自动检查，清除定时任务
+            wp_clear_scheduled_hook('ai_summary_check_update_cron');
+        }
+    }
+    
+    static function autoCheckUpdate()
+    {
+        global $ai_summary_set;
+        $ai_summary_set = Options::getOptions();
+        
+        // 检查是否启用自动检查
+        if (!$ai_summary_set['auto_check_update']) {
+            return;
+        }
+        
+        $time = time();
+        $last_time = $ai_summary_set['last_check_time'];
+        
+        // 避免频繁检查（至少间隔1小时）
+        if ($time - $last_time < 3600) {
+            return;
+        }
+        
+        $plugin_info = static::getServePluginInfo();
+        $ai_summary_set['last_check_time'] = $time;
+        
+        if ($plugin_info !== false) {
+            if (version_compare($plugin_info['version_name'], Config::$plugin_version_name, '>')) {
+                $ai_summary_set['need_update'] = true;
+            } else {
+                $ai_summary_set['need_update'] = false;
+            }
+        }
+        
+        Options::saveSet($ai_summary_set);
+    }
+    
+    static function showUpdateNotice()
+    {
+        // 只在插件管理页面显示通知
+        $screen = get_current_screen();
+        if (!$screen || strpos($screen->id, 'ai_summary') === false) {
+            return;
+        }
+        
+        global $ai_summary_set;
+        $ai_summary_set = Options::getOptions();
+        
+        if (isset($ai_summary_set['need_update']) && $ai_summary_set['need_update']) {
+            echo '<div class="notice notice-info is-dismissible">';
+            echo '<p><strong>AI Summary</strong> 插件有新版本可用！';
+            echo '<a href="' . admin_url('admin.php?page=ai_summary_set#about-tab') . '" style="margin-left: 10px;">查看更新</a>';
+            echo '</p>';
+            echo '</div>';
+        }
     }
 
 
@@ -65,10 +166,32 @@ class Plugin
     {
         add_menu_page('AI Summary', 'AI Summary', 'administrator', 'ai_summary_set', function () {
             require_once Config::$plugin_dir . '/pages/admin-set.php';
-        }, 'dashicons-controls-volumeon');
+        }, 'dashicons-icon-ai-summary');
     }
 
-
+    static function getServePluginInfo()
+    {
+        $url = Config::$plugin_server_url;
+        $response = wp_remote_get($url, ['timeout' => 10]);
+        if (is_wp_error($response)) {
+            return false;
+        }
+        $body = wp_remote_retrieve_body($response);
+        $json = json_decode($body, true);
+        if (
+            ! $json
+            || ! isset($json['code'], $json['data'])
+            || $json['code'] !== 200
+        ) {
+            return false;
+        }
+        $d = $json['data'];
+        return [
+            'version'      => isset($d['version']) ? floatval($d['version']) : 0,
+            'version_name' => $d['version'],
+            'down_url'     => $d['package_url'],
+        ];
+    }
 
 
     static function getSeoInfo($post_id)

@@ -65,14 +65,17 @@ class Options
         $data['ai_summary_path'] = 'wenxin';
         $data['ai_summary_word_number'] = 200;
         $data['ai_summary_animation'] = true;
-        $data['ai_summary_see_other_btn'] = true;
-        $data['ai_summary_feedback_url'] = '';
         
         // AI SEO配置
         $data['ai_seo_open'] = false;
         $data['ai_seo_path'] = 'wenxin';
         $data['ai_seo_description_length'] = 150;
         $data['ai_seo_keywords_length'] = 10;
+        
+        // 更新相关配置
+        $data['last_check_time'] = time();
+        $data['need_update'] = false;
+        $data['auto_check_update'] = true;
         
         return $data;
     }
