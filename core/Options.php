@@ -41,6 +41,20 @@ class Options
             'gpt' => Gemini::getModels()
         ];
         
+        $data[] = [
+            'type' => 'doubao',
+            'name' => '豆包',
+            'icon' => 'doubao.svg',
+            'gpt' => Doubao::getModels()
+        ];
+        
+        $data[] = [
+            'type' => 'tongyi',
+            'name' => '通义千问',
+            'icon' => 'qwen.svg',
+            'gpt' => Tongyi::getModels()
+        ];
+        
         return $data;
     }
 
@@ -59,6 +73,16 @@ class Options
         // Gemini配置
         $data['gemini_api_key'] = '';
         $data['gemini_model'] = 'gemini-2.0-flash';
+        
+        // 豆包配置
+        $data['doubao_api_key'] = '';
+        $data['doubao_model'] = 'doubao-lite-4k-character-240828';
+        $data['doubao_custom_model'] = '';
+        $data['doubao_base_url'] = 'https://ark.cn-beijing.volces.com/api/v3';
+        
+        // 通义千问配置
+        $data['tongyi_api_key'] = '';
+        $data['tongyi_model'] = 'qwen-long';
         
         // AI摘要配置
         $data['open_ai_summary'] = true;

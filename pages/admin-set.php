@@ -51,11 +51,16 @@
         <div class="tab-content" id="ai-config-tab">
             <div class="ai-providers">
                 <!-- 文心一言配置 -->
-                <div class="provider-card">
+                <div class="provider-card collapsed">
                     <div class="provider-header">
                         <img src="<?php echo ai_summary\Config::$img_url; ?>/wenxin.svg" alt="文心一言" class="provider-icon">
                         <h3>文心一言</h3>
                         <span class="provider-status" id="wenxin-status">未配置</span>
+                        <div class="provider-toggle">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
                     </div>
                     <div class="provider-config">
                         <div class="input-group">
@@ -80,12 +85,17 @@
                     </div>
                 </div>
 
-                <!-- ChatGPT配置 -->
-                <div class="provider-card">
+                                <!-- ChatGPT配置 -->
+                <div class="provider-card collapsed">
                     <div class="provider-header">
-                    <img src="<?php echo ai_summary\Config::$img_url; ?>/openai.svg" alt="ChatGPT" class="provider-icon">
+                        <img src="<?php echo ai_summary\Config::$img_url; ?>/openai.svg" alt="ChatGPT" class="provider-icon">
                         <h3>ChatGPT</h3>
                         <span class="provider-status" id="chatgpt-status">未配置</span>
+                        <div class="provider-toggle">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
                     </div>
                     <div class="provider-config">
                         <div class="input-group">
@@ -110,11 +120,16 @@
                 </div>
 
                 <!-- Gemini配置 -->
-                <div class="provider-card">
+                <div class="provider-card collapsed">
                     <div class="provider-header">
                     <img src="<?php echo ai_summary\Config::$img_url; ?>/gemini.svg" alt="Gemini" class="provider-icon">
                         <h3>Google Gemini</h3>
                         <span class="provider-status" id="gemini-status">未配置</span>
+                        <div class="provider-toggle">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
                     </div>
                     <div class="provider-config">
                         <div class="input-group">
@@ -128,6 +143,77 @@
                                 <option value="gemini-1.5-pro">Gemini 1.5 Pro - 1.5版本，功能全面</option>
                                 <option value="gemini-pro">Gemini Pro - 经典版本</option>
                                 <option value="gemini-pro-vision">Gemini Pro Vision - 支持图像输入</option>
+                            </select>
+                        </div>
+                        <button class="btn-test">测试连接</button>
+                    </div>
+                </div>
+
+                <!-- 豆包配置 -->
+                <div class="provider-card collapsed">
+                    <div class="provider-header">
+                        <img src="<?php echo ai_summary\Config::$img_url; ?>/doubao.svg" alt="豆包" class="provider-icon">
+                        <h3>豆包</h3>
+                        <span class="provider-status" id="doubao-status">未配置</span>
+                        <div class="provider-toggle">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="provider-config">
+                        <div class="input-group">
+                            <label>API Key</label>
+                            <input type="text" id="doubao_api_key" placeholder="请输入豆包API Key">
+                            <p class="input-desc">在火山方舟平台获取</p>
+                        </div>
+                        <div class="input-group">
+                            <label>API地址 (可选)</label>
+                            <input type="text" id="doubao_base_url" placeholder="默认: https://ark.cn-beijing.volces.com/api/v3">
+                        </div>
+                        <div class="input-group">
+                            <label>模型选择</label>
+                            <select id="doubao_model">
+                                <option value="doubao-lite-4k-character-240828">doubao-lite-4k - 轻量版，4K上下文，角色版</option>
+                                <option value="doubao-lite-32k-240828" selected>doubao-lite-32k - 轻量版，32K上下文</option>
+                                <option value="doubao-pro-4k-240515">doubao-pro-4k - 专业版，4K上下文</option>
+                                <option value="doubao-pro-32k-241215">doubao-pro-32k - 专业版，32K上下文</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>自定义模型名称 (可选)</label>
+                            <input type="text" id="doubao_custom_model" placeholder="输入自定义模型名称，优先于上方选择">
+                            <p class="input-desc">如果填写自定义模型名称，将优先使用此名称而非上方选择的模型</p>
+                        </div>
+                        <button class="btn-test">测试连接</button>
+                    </div>
+                </div>
+
+                <!-- 通义千问配置 -->
+                <div class="provider-card collapsed">
+                    <div class="provider-header">
+                        <img src="<?php echo ai_summary\Config::$img_url; ?>/qwen.svg" alt="通义千问" class="provider-icon">
+                        <h3>通义千问</h3>
+                        <span class="provider-status" id="tongyi-status">未配置</span>
+                        <div class="provider-toggle">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="provider-config">
+                        <div class="input-group">
+                            <label>API Key</label>
+                            <input type="text" id="tongyi_api_key" placeholder="请输入阿里云百炼API Key">
+                            <p class="input-desc">在阿里云百炼平台获取</p>
+                        </div>
+                        <div class="input-group">
+                            <label>模型选择</label>
+                            <select id="tongyi_model">
+                                <option value="qwen-long" selected>qwen-long - 长文本版</option>
+                                <option value="qwen-turbo">qwen-turbo - 极速版</option>
+                                <option value="qwen-plus">qwen-plus - 通用增强版</option>
+                                <option value="qwen-max">qwen-max - 旗舰版</option>
                             </select>
                         </div>
                         <button class="btn-test">测试连接</button>
@@ -158,6 +244,16 @@
                             <input type="radio" name="ai_summary_path" value="gemini">
                             <span class="radio-custom"></span>
                             Gemini
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="ai_summary_path" value="doubao">
+                            <span class="radio-custom"></span>
+                            豆包
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="ai_summary_path" value="tongyi">
+                            <span class="radio-custom"></span>
+                            通义千问
                         </label>
                     </div>
                 </div>
@@ -208,6 +304,16 @@
                             <input type="radio" name="ai_seo_path" value="gemini">
                             <span class="radio-custom"></span>
                             Gemini
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="ai_seo_path" value="doubao">
+                            <span class="radio-custom"></span>
+                            豆包
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="ai_seo_path" value="tongyi">
+                            <span class="radio-custom"></span>
+                            通义千问
                         </label>
                     </div>
                 </div>

@@ -210,6 +210,37 @@ class Ajax
         self::setAjaxDataAndDie(500, 'Gemini连接失败，请检查API密钥和网络');
     }
 
+    static function testDoubao()
+    {
+        self::needLogin('admin');
+        $arr = [['api_key', 1], ['model', 1]];
+        $arr = self::validationParameters($arr);
+        
+        // base_url是可选参数
+        $base_url = isset($_POST['base_url']) ? $_POST['base_url'] : 'https://ark.cn-beijing.volces.com/api/v3';
+        
+        $messages = [['role' => 'user', 'content' => '请回答ok']];
+        $re = Doubao::chat($arr['model'], $messages, $arr['api_key'], '', 0.7, $base_url);
+        if ($re !== false) {
+            self::setAjaxDataAndDie(200, '', $re);
+        }
+        self::setAjaxDataAndDie(500, '豆包连接失败，请检查API密钥、base_url和网络');
+    }
+
+    static function testTongyi()
+    {
+        self::needLogin('admin');
+        $arr = [['api_key', 1], ['model', 1]];
+        $arr = self::validationParameters($arr);
+        
+        $messages = [['role' => 'user', 'content' => '请回答ok']];
+        $re = Tongyi::chat($arr['model'], $messages, $arr['api_key'], '', 0.7);
+        if ($re !== false) {
+            self::setAjaxDataAndDie(200, '', $re);
+        }
+        self::setAjaxDataAndDie(500, '通义千问连接失败，请检查API密钥和网络');
+    }
+
     static function getPostList()
     {
         self::needLogin('edit');

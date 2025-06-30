@@ -15,6 +15,8 @@ class LoadFiles
         require_once "$core_dir/app/WenXin.php";
         require_once "$core_dir/app/ChatGPT.php";
         require_once "$core_dir/app/Gemini.php";
+        require_once "$core_dir/app/Doubao.php";
+        require_once "$core_dir/app/Tongyi.php";
         require_once "$core_dir/app/AI.php";
 
         global $ai_summary_set;

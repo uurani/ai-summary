@@ -3,7 +3,7 @@
 Plugin Name: AI Summary
 Plugin URI: https://muxui.com/490/
 Description: 为WordPress接入多种AI摘要生成能力，支持文心一言、ChatGPT、Gemini
-Version: 1.0.3
+Version: 1.1.0
 Requires at least: 5.7
 Tested up to: 8.0
 Requires PHP: 5.6

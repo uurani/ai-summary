@@ -68,7 +68,7 @@
                     <a href="https://muxui.com/490/" target="_blank">AI Summary</a>
                 </div>
             </div>
-            <p class="ai-summary-subtitle">此内容由AI根据文章内容自动生成，并已由人工审核</p>
+            <p class="ai-summary-subtitle">此内容由AI根据文章内容自动生成</p>
         `;
 
         return header;

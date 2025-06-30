@@ -89,6 +89,25 @@ class AI
                 }
                 return Gemini::chat($settings['gemini_model'], $messages, $settings['gemini_api_key'], $system);
                 
+            case 'doubao':
+                if (empty($settings['doubao_api_key'])) {
+                    return false;
+                }
+                // 优先使用自定义模型，如果没有则使用选择的模型
+                $model = !empty($settings['doubao_custom_model']) 
+                    ? $settings['doubao_custom_model'] 
+                    : $settings['doubao_model'];
+                $base_url = isset($settings['doubao_base_url']) && !empty($settings['doubao_base_url']) 
+                    ? $settings['doubao_base_url'] 
+                    : 'https://ark.cn-beijing.volces.com/api/v3';
+                return Doubao::chat($model, $messages, $settings['doubao_api_key'], $system, 0.7, $base_url);
+                
+            case 'tongyi':
+                if (empty($settings['tongyi_api_key'])) {
+                    return false;
+                }
+                return Tongyi::chat($settings['tongyi_model'], $messages, $settings['tongyi_api_key'], $system);
+                
             default:
                 return false;
         }

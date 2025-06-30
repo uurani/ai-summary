@@ -73,6 +73,16 @@ jQuery(document).ready(function($) {
             $('#gemini_api_key').val(settings.gemini_api_key);
             $('#gemini_model').val(settings.gemini_model);
             
+            // 豆包配置
+            $('#doubao_api_key').val(settings.doubao_api_key);
+            $('#doubao_model').val(settings.doubao_model);
+            $('#doubao_custom_model').val(settings.doubao_custom_model);
+            $('#doubao_base_url').val(settings.doubao_base_url);
+            
+            // 通义千问配置
+            $('#tongyi_api_key').val(settings.tongyi_api_key);
+            $('#tongyi_model').val(settings.tongyi_model);
+            
             // 摘要设置
             $(`input[name="ai_summary_path"][value="${settings.ai_summary_path}"]`).prop('checked', true);
             $('#ai_summary_word_number').val(settings.ai_summary_word_number);
@@ -97,8 +107,20 @@ jQuery(document).ready(function($) {
 
     // 绑定事件
     function bindEvents() {
+        // 配置面板展开/折叠
+        $('.provider-header').off('click').on('click', function(e) {
+            // 防止在点击测试连接按钮时触发折叠
+            if ($(e.target).closest('.btn-test').length > 0) {
+                return;
+            }
+            
+            const card = $(this).closest('.provider-card');
+            card.toggleClass('collapsed');
+        });
+        
         // 测试连接按钮 - 添加防抖机制
-        $('.btn-test').off('click').on('click', function() {
+        $('.btn-test').off('click').on('click', function(e) {
+            e.stopPropagation(); // 防止冒泡到header点击事件
             const button = $(this);
             
             // 防止重复点击
@@ -117,6 +139,12 @@ jQuery(document).ready(function($) {
                     break;
                 case 'Google Gemini':
                     testGemini(button);
+                    break;
+                case '豆包':
+                    testDoubao(button);
+                    break;
+                case '通义千问':
+                    testTongyi(button);
                     break;
             }
         });
@@ -146,6 +174,14 @@ jQuery(document).ready(function($) {
             updateProviderStatus('gemini');
         });
         
+        $('#doubao_api_key').on('input', function() {
+            updateProviderStatus('doubao');
+        });
+        
+        $('#tongyi_api_key').on('input', function() {
+            updateProviderStatus('tongyi');
+        });
+        
         // 更新相关事件
         $('#check-update-btn').off('click').on('click', function() {
             checkForUpdates();
@@ -161,6 +197,8 @@ jQuery(document).ready(function($) {
         updateProviderStatus('wenxin');
         updateProviderStatus('chatgpt');
         updateProviderStatus('gemini');
+        updateProviderStatus('doubao');
+        updateProviderStatus('tongyi');
     }
 
     // 更新提供商状态
@@ -178,10 +216,18 @@ jQuery(document).ready(function($) {
             case 'gemini':
                 hasConfig = $('#gemini_api_key').val();
                 break;
+            case 'doubao':
+                hasConfig = $('#doubao_api_key').val();
+                break;
+            case 'tongyi':
+                hasConfig = $('#tongyi_api_key').val();
+                break;
         }
         
         if (hasConfig) {
             statusElement.text('已配置').removeClass('error').addClass('configured');
+            // 如果已配置，自动展开配置面板
+            statusElement.closest('.provider-card').removeClass('collapsed');
         } else {
             statusElement.text('未配置').removeClass('configured').addClass('error');
         }
@@ -232,6 +278,42 @@ jQuery(document).ready(function($) {
         }
         
         testAI(button, 'testGemini', {
+            api_key: apiKey,
+            model: model
+        });
+    }
+
+    // 测试豆包
+    function testDoubao(button) {
+        const apiKey = $('#doubao_api_key').val();
+        const customModel = $('#doubao_custom_model').val();
+        const selectedModel = $('#doubao_model').val();
+        const model = customModel || selectedModel; // 优先使用自定义模型
+        const baseUrl = $('#doubao_base_url').val();
+        
+        if (!apiKey) {
+            showNotice('请填写豆包API Key', 'error');
+            return;
+        }
+        
+        testAI(button, 'testDoubao', {
+            api_key: apiKey,
+            model: model,
+            base_url: baseUrl || 'https://ark.cn-beijing.volces.com/api/v3'
+        });
+    }
+
+    // 测试通义千问
+    function testTongyi(button) {
+        const apiKey = $('#tongyi_api_key').val();
+        const model = $('#tongyi_model').val();
+        
+        if (!apiKey) {
+            showNotice('请填写通义千问API Key', 'error');
+            return;
+        }
+        
+        testAI(button, 'testTongyi', {
             api_key: apiKey,
             model: model
         });
@@ -305,6 +387,16 @@ jQuery(document).ready(function($) {
             // Gemini配置
             gemini_api_key: $('#gemini_api_key').val(),
             gemini_model: $('#gemini_model').val(),
+            
+            // 豆包配置
+            doubao_api_key: $('#doubao_api_key').val(),
+            doubao_model: $('#doubao_model').val(),
+            doubao_custom_model: $('#doubao_custom_model').val(),
+            doubao_base_url: $('#doubao_base_url').val() || 'https://ark.cn-beijing.volces.com/api/v3',
+            
+            // 通义千问配置
+            tongyi_api_key: $('#tongyi_api_key').val(),
+            tongyi_model: $('#tongyi_model').val(),
             
             // 摘要设置
             ai_summary_path: $('input[name="ai_summary_path"]:checked').val(),
