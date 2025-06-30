@@ -36,7 +36,7 @@ class Config
         self::$lib_url = self::$static_url . '/lib';
         self::$img_url = self::$static_url . '/img';
         self::$plugin_version = 1;
-        self::$plugin_version_name = '1.1.0';
+        self::$plugin_version_name = '1.1.1';
         self::$set_name = 'ai_summary_set';
         self::$is_development = false;
         require_once 'LoadFiles.php';
