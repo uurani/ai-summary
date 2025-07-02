@@ -21,10 +21,10 @@ class Options
     static function getAiTypeStructure()
     {
         $data[] = [
-            'type' => 'wenxin',
-            'name' => '文心一言',
-            'icon' => 'wenxin.svg',
-            'gpt' => WenXin::getModels()
+            'type' => 'gemini',
+            'name' => 'Gemini',
+            'icon' => 'gemini.svg',
+            'gpt' => Gemini::getModels()
         ];
         
         $data[] = [
@@ -35,10 +35,10 @@ class Options
         ];
         
         $data[] = [
-            'type' => 'gemini',
-            'name' => 'Gemini',
-            'icon' => 'gemini.svg',
-            'gpt' => Gemini::getModels()
+            'type' => 'wenxin',
+            'name' => '文心一言',
+            'icon' => 'wenxin.svg',
+            'gpt' => WenXin::getModels()
         ];
         
         $data[] = [
@@ -61,18 +61,23 @@ class Options
     static function getDefaultOptions()
     {
         
-        // 文心一言配置
-        $data['wenxin_api_key'] = '';
-        $data['wenxin_model'] = 'ernie-3.5-8k';
+        // Gemini配置
+        $data['gemini_api_key'] = '';
+        $data['gemini_model'] = 'gemini-2.0-flash';
+        $data['gemini_base_url'] = '';
+        $data['gemini_custom_model'] = '';
         
         // ChatGPT配置
         $data['chatgpt_api_key'] = '';
         $data['chatgpt_model'] = 'gpt-3.5-turbo';
         $data['chatgpt_base_url'] = 'https://api.openai.com';
+        $data['chatgpt_custom_model'] = '';
         
-        // Gemini配置
-        $data['gemini_api_key'] = '';
-        $data['gemini_model'] = 'gemini-2.0-flash';
+        // 文心一言配置
+        $data['wenxin_api_key'] = '';
+        $data['wenxin_model'] = 'ernie-3.5-8k';
+        $data['wenxin_base_url'] = '';
+        $data['wenxin_custom_model'] = '';
         
         // 豆包配置
         $data['doubao_api_key'] = '';
@@ -83,16 +88,18 @@ class Options
         // 通义千问配置
         $data['tongyi_api_key'] = '';
         $data['tongyi_model'] = 'qwen-long';
+        $data['tongyi_base_url'] = '';
+        $data['tongyi_custom_model'] = '';
         
         // AI摘要配置
         $data['open_ai_summary'] = true;
-        $data['ai_summary_path'] = 'wenxin';
+        $data['ai_summary_path'] = 'gemini';
         $data['ai_summary_word_number'] = 200;
         $data['ai_summary_animation'] = true;
         
         // AI SEO配置
         $data['ai_seo_open'] = false;
-        $data['ai_seo_path'] = 'wenxin';
+        $data['ai_seo_path'] = 'gemini';
         $data['ai_seo_description_length'] = 150;
         $data['ai_seo_keywords_length'] = 10;
         

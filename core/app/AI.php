@@ -75,19 +75,27 @@ class AI
                     return false;
                 }
                 $model = isset($settings['wenxin_model']) ? $settings['wenxin_model'] : 'ernie-3.5-8k';
-                return WenXin::chat($model, $messages, $settings['wenxin_api_key'], $system);
+                $base_url = isset($settings['wenxin_base_url']) ? $settings['wenxin_base_url'] : '';
+                $custom_model = isset($settings['wenxin_custom_model']) ? $settings['wenxin_custom_model'] : '';
+                return WenXin::chat($model, $messages, $settings['wenxin_api_key'], $system, 0.7, $base_url, $custom_model);
                 
             case 'chatgpt':
                 if (empty($settings['chatgpt_api_key'])) {
                     return false;
                 }
-                return ChatGPT::chat($settings['chatgpt_model'], $messages, $settings['chatgpt_api_key'], $system);
+                $base_url = isset($settings['chatgpt_base_url']) && !empty($settings['chatgpt_base_url'])
+                    ? $settings['chatgpt_base_url']
+                    : 'https://api.openai.com';
+                $custom_model = isset($settings['chatgpt_custom_model']) ? $settings['chatgpt_custom_model'] : '';
+                return ChatGPT::chat($settings['chatgpt_model'], $messages, $settings['chatgpt_api_key'], $system, 0.7, 2000, $base_url, $custom_model);
                 
             case 'gemini':
                 if (empty($settings['gemini_api_key'])) {
                     return false;
                 }
-                return Gemini::chat($settings['gemini_model'], $messages, $settings['gemini_api_key'], $system);
+                $base_url = isset($settings['gemini_base_url']) ? $settings['gemini_base_url'] : '';
+                $custom_model = isset($settings['gemini_custom_model']) ? $settings['gemini_custom_model'] : '';
+                return Gemini::chat($settings['gemini_model'], $messages, $settings['gemini_api_key'], $system, 0.7, $base_url, $custom_model);
                 
             case 'doubao':
                 if (empty($settings['doubao_api_key'])) {
@@ -106,7 +114,9 @@ class AI
                 if (empty($settings['tongyi_api_key'])) {
                     return false;
                 }
-                return Tongyi::chat($settings['tongyi_model'], $messages, $settings['tongyi_api_key'], $system);
+                $base_url = isset($settings['tongyi_base_url']) ? $settings['tongyi_base_url'] : '';
+                $custom_model = isset($settings['tongyi_custom_model']) ? $settings['tongyi_custom_model'] : '';
+                return Tongyi::chat($settings['tongyi_model'], $messages, $settings['tongyi_api_key'], $system, 0.7, $base_url, $custom_model);
                 
             default:
                 return false;

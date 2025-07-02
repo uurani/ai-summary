@@ -4,8 +4,13 @@ namespace ai_summary;
 
 class ChatGPT
 {
-    static function chat($model, $messages, $api_key, $system = '', $temperature = 0.7, $max_tokens = 2000, $base_url = 'https://api.openai.com')
+    static function chat($model, $messages, $api_key, $system = '', $temperature = 0.7, $max_tokens = 2000, $base_url = 'https://api.openai.com', $custom_model = '')
     {
+        // 优先使用自定义模型名称
+        if (!empty($custom_model)) {
+            $model = $custom_model;
+        }
+        
         // 确保base_url以/结尾时去掉，避免双斜杠
         $base_url = rtrim($base_url, '/');
         $url = "{$base_url}/v1/chat/completions";

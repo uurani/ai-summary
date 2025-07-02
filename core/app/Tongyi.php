@@ -4,9 +4,20 @@ namespace ai_summary;
 
 class Tongyi
 {
-    static function chat($model, $messages, $api_key, $system = '', $temperature = 0.7)
+    static function chat($model, $messages, $api_key, $system = '', $temperature = 0.7, $base_url = '', $custom_model = '')
     {
-        $url = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions";
+        // 优先使用自定义模型名称
+        if (!empty($custom_model)) {
+            $model = $custom_model;
+        }
+        
+        // 处理自定义API地址
+        if (empty($base_url)) {
+            $base_url = 'https://dashscope.aliyuncs.com';
+        }
+        $base_url = rtrim($base_url, '/');
+        
+        $url = "{$base_url}/compatible-mode/v1/chat/completions";
         
         $data = [
             'model' => $model,

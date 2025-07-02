@@ -113,24 +113,22 @@ class Ajax
         $arr = [['api_key', 1], ['model', 1]];
         $arr = self::validationParameters($arr);
         
+        // base_url和custom_model是可选参数
+        $base_url = isset($_POST['base_url']) ? $_POST['base_url'] : '';
+        $custom_model = isset($_POST['custom_model']) ? $_POST['custom_model'] : '';
+        
         // 验证API Key格式
         if (strlen($arr['api_key']) < 20) {
             self::setAjaxDataAndDie(500, 'API Key格式不正确，请检查文心一言API Key');
         }
         
-        // 验证模型名称
-        $validModels = ['ernie-3.5-8k', 'ernie-4.0-8k', 'ernie-4.0-turbo-8k', 'ernie-3.5-128k', 'ernie-speed-8k', 'ernie-speed-128k'];
-        if (!in_array($arr['model'], $validModels)) {
-            self::setAjaxDataAndDie(500, "无效的文心一言模型：{$arr['model']}");
-        }
-        
         $messages = [['role' => 'user', 'content' => '请回答ok']];
-        $re = WenXin::chat($arr['model'], $messages, $arr['api_key'], '', 0.7);
+        $re = WenXin::chat($arr['model'], $messages, $arr['api_key'], '', 0.7, $base_url, $custom_model);
         
         if ($re !== false) {
             self::setAjaxDataAndDie(200, '', $re);
         }
-        self::setAjaxDataAndDie(500, '文心一言连接失败，请检查API Key、模型名称和网络连接');
+        self::setAjaxDataAndDie(500, '文心一言连接失败，请检查API Key、base_url和网络连接');
     }
 
     static function getSummary()
@@ -186,11 +184,12 @@ class Ajax
         $arr = [['api_key', 1], ['model', 1]];
         $arr = self::validationParameters($arr);
         
-        // base_url是可选参数
+        // base_url和custom_model是可选参数
         $base_url = isset($_POST['base_url']) ? $_POST['base_url'] : 'https://api.openai.com';
+        $custom_model = isset($_POST['custom_model']) ? $_POST['custom_model'] : '';
         
         $messages = [['role' => 'user', 'content' => '请回答ok']];
-        $re = ChatGPT::chat($arr['model'], $messages, $arr['api_key'], '', 0.7, 100, $base_url);
+        $re = ChatGPT::chat($arr['model'], $messages, $arr['api_key'], '', 0.7, 100, $base_url, $custom_model);
         if ($re !== false) {
             self::setAjaxDataAndDie(200, '', $re);
         }
@@ -202,12 +201,17 @@ class Ajax
         self::needLogin('admin');
         $arr = [['api_key', 1], ['model', 1]];
         $arr = self::validationParameters($arr);
+        
+        // base_url和custom_model是可选参数
+        $base_url = isset($_POST['base_url']) ? $_POST['base_url'] : '';
+        $custom_model = isset($_POST['custom_model']) ? $_POST['custom_model'] : '';
+        
         $messages = [['role' => 'user', 'content' => '请回答ok']];
-        $re = Gemini::chat($arr['model'], $messages, $arr['api_key'], '', 0.7);
+        $re = Gemini::chat($arr['model'], $messages, $arr['api_key'], '', 0.7, $base_url, $custom_model);
         if ($re !== false) {
             self::setAjaxDataAndDie(200, '', $re);
         }
-        self::setAjaxDataAndDie(500, 'Gemini连接失败，请检查API密钥和网络');
+        self::setAjaxDataAndDie(500, 'Gemini连接失败，请检查API密钥、base_url和网络');
     }
 
     static function testDoubao()
@@ -233,12 +237,16 @@ class Ajax
         $arr = [['api_key', 1], ['model', 1]];
         $arr = self::validationParameters($arr);
         
+        // base_url和custom_model是可选参数
+        $base_url = isset($_POST['base_url']) ? $_POST['base_url'] : '';
+        $custom_model = isset($_POST['custom_model']) ? $_POST['custom_model'] : '';
+        
         $messages = [['role' => 'user', 'content' => '请回答ok']];
-        $re = Tongyi::chat($arr['model'], $messages, $arr['api_key'], '', 0.7);
+        $re = Tongyi::chat($arr['model'], $messages, $arr['api_key'], '', 0.7, $base_url, $custom_model);
         if ($re !== false) {
             self::setAjaxDataAndDie(200, '', $re);
         }
-        self::setAjaxDataAndDie(500, '通义千问连接失败，请检查API密钥和网络');
+        self::setAjaxDataAndDie(500, '通义千问连接失败，请检查API密钥、base_url和网络');
     }
 
     static function getPostList()

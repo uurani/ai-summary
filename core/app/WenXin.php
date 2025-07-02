@@ -7,9 +7,20 @@ class WenXin
     /**
      * 使用API Key调用千帆大模型统一接口
      */
-    static function chat($model, $messages, $api_key, $system = '', $temperature = 0.7)
+    static function chat($model, $messages, $api_key, $system = '', $temperature = 0.7, $base_url = '', $custom_model = '')
     {
-        $url = "https://qianfan.baidubce.com/v2/chat/completions";
+        // 优先使用自定义模型名称
+        if (!empty($custom_model)) {
+            $model = $custom_model;
+        }
+        
+        // 处理自定义API地址
+        if (empty($base_url)) {
+            $base_url = 'https://qianfan.baidubce.com';
+        }
+        $base_url = rtrim($base_url, '/');
+        
+        $url = "{$base_url}/v2/chat/completions";
         
         // 构建消息数组
         $finalMessages = [];

@@ -60,18 +60,23 @@ jQuery(document).ready(function($) {
             $('#open_ai_summary').prop('checked', settings.open_ai_summary);
             $('#ai_summary_animation').prop('checked', settings.ai_summary_animation);
             
-            // 文心一言配置
-            $('#wenxin_api_key').val(settings.wenxin_api_key);
-            $('#wenxin_model').val(settings.wenxin_model);
+            // Gemini配置
+            $('#gemini_api_key').val(settings.gemini_api_key);
+            $('#gemini_model').val(settings.gemini_model);
+            $('#gemini_base_url').val(settings.gemini_base_url);
+            $('#gemini_custom_model').val(settings.gemini_custom_model);
             
             // ChatGPT配置
             $('#chatgpt_api_key').val(settings.chatgpt_api_key);
             $('#chatgpt_model').val(settings.chatgpt_model);
             $('#chatgpt_base_url').val(settings.chatgpt_base_url);
+            $('#chatgpt_custom_model').val(settings.chatgpt_custom_model);
             
-            // Gemini配置
-            $('#gemini_api_key').val(settings.gemini_api_key);
-            $('#gemini_model').val(settings.gemini_model);
+            // 文心一言配置
+            $('#wenxin_api_key').val(settings.wenxin_api_key);
+            $('#wenxin_model').val(settings.wenxin_model);
+            $('#wenxin_base_url').val(settings.wenxin_base_url);
+            $('#wenxin_custom_model').val(settings.wenxin_custom_model);
             
             // 豆包配置
             $('#doubao_api_key').val(settings.doubao_api_key);
@@ -82,6 +87,8 @@ jQuery(document).ready(function($) {
             // 通义千问配置
             $('#tongyi_api_key').val(settings.tongyi_api_key);
             $('#tongyi_model').val(settings.tongyi_model);
+            $('#tongyi_base_url').val(settings.tongyi_base_url);
+            $('#tongyi_custom_model').val(settings.tongyi_custom_model);
             
             // 摘要设置
             $(`input[name="ai_summary_path"][value="${settings.ai_summary_path}"]`).prop('checked', true);
@@ -162,16 +169,16 @@ jQuery(document).ready(function($) {
         $('.btn-secondary').off('click').on('click', resetSettings);
 
         // API密钥输入时检查状态
-        $('#wenxin_api_key').on('input', function() {
-            updateProviderStatus('wenxin');
+        $('#gemini_api_key').on('input', function() {
+            updateProviderStatus('gemini');
         });
         
         $('#chatgpt_api_key').on('input', function() {
             updateProviderStatus('chatgpt');
         });
         
-        $('#gemini_api_key').on('input', function() {
-            updateProviderStatus('gemini');
+        $('#wenxin_api_key').on('input', function() {
+            updateProviderStatus('wenxin');
         });
         
         $('#doubao_api_key').on('input', function() {
@@ -194,9 +201,9 @@ jQuery(document).ready(function($) {
 
     // 检查AI状态
     function checkAIStatus() {
-        updateProviderStatus('wenxin');
-        updateProviderStatus('chatgpt');
         updateProviderStatus('gemini');
+        updateProviderStatus('chatgpt');
+        updateProviderStatus('wenxin');
         updateProviderStatus('doubao');
         updateProviderStatus('tongyi');
     }
@@ -236,7 +243,10 @@ jQuery(document).ready(function($) {
     // 测试文心一言
     function testWenxin(button) {
         const apiKey = $('#wenxin_api_key').val();
-        const model = $('#wenxin_model').val();
+        const customModel = $('#wenxin_custom_model').val();
+        const selectedModel = $('#wenxin_model').val();
+        const model = customModel || selectedModel; // 优先使用自定义模型
+        const baseUrl = $('#wenxin_base_url').val();
         
         if (!apiKey) {
             showNotice('请填写文心一言API Key', 'error');
@@ -245,14 +255,18 @@ jQuery(document).ready(function($) {
         
         testAI(button, 'testWenXin', {
             api_key: apiKey,
-            model: model
+            model: selectedModel, // 发送原始选择的模型
+            base_url: baseUrl,
+            custom_model: customModel // 发送自定义模型
         });
     }
 
     // 测试ChatGPT
     function testChatGPT(button) {
         const apiKey = $('#chatgpt_api_key').val();
-        const model = $('#chatgpt_model').val();
+        const customModel = $('#chatgpt_custom_model').val();
+        const selectedModel = $('#chatgpt_model').val();
+        const model = customModel || selectedModel; // 优先使用自定义模型
         const baseUrl = $('#chatgpt_base_url').val() || 'https://api.openai.com';
         
         if (!apiKey) {
@@ -262,15 +276,19 @@ jQuery(document).ready(function($) {
         
         testAI(button, 'testChatGPT', {
             api_key: apiKey,
-            model: model,
-            base_url: baseUrl
+            model: selectedModel, // 发送原始选择的模型
+            base_url: baseUrl,
+            custom_model: customModel // 发送自定义模型
         });
     }
 
     // 测试Gemini
     function testGemini(button) {
         const apiKey = $('#gemini_api_key').val();
-        const model = $('#gemini_model').val();
+        const customModel = $('#gemini_custom_model').val();
+        const selectedModel = $('#gemini_model').val();
+        const model = customModel || selectedModel; // 优先使用自定义模型
+        const baseUrl = $('#gemini_base_url').val();
         
         if (!apiKey) {
             showNotice('请填写Gemini API Key', 'error');
@@ -279,7 +297,9 @@ jQuery(document).ready(function($) {
         
         testAI(button, 'testGemini', {
             api_key: apiKey,
-            model: model
+            model: selectedModel, // 发送原始选择的模型
+            base_url: baseUrl,
+            custom_model: customModel // 发送自定义模型
         });
     }
 
@@ -306,7 +326,10 @@ jQuery(document).ready(function($) {
     // 测试通义千问
     function testTongyi(button) {
         const apiKey = $('#tongyi_api_key').val();
-        const model = $('#tongyi_model').val();
+        const customModel = $('#tongyi_custom_model').val();
+        const selectedModel = $('#tongyi_model').val();
+        const model = customModel || selectedModel; // 优先使用自定义模型
+        const baseUrl = $('#tongyi_base_url').val();
         
         if (!apiKey) {
             showNotice('请填写通义千问API Key', 'error');
@@ -315,7 +338,9 @@ jQuery(document).ready(function($) {
         
         testAI(button, 'testTongyi', {
             api_key: apiKey,
-            model: model
+            model: selectedModel, // 发送原始选择的模型
+            base_url: baseUrl,
+            custom_model: customModel // 发送自定义模型
         });
     }
 
@@ -375,18 +400,23 @@ jQuery(document).ready(function($) {
             ai_summary_animation: $('#ai_summary_animation').is(':checked'),
             ai_summary_see_other_btn: $('#ai_summary_see_other_btn').is(':checked'),
             
-            // 文心一言配置
-            wenxin_api_key: $('#wenxin_api_key').val(),
-            wenxin_model: $('#wenxin_model').val(),
+            // Gemini配置
+            gemini_api_key: $('#gemini_api_key').val(),
+            gemini_model: $('#gemini_model').val(),
+            gemini_base_url: $('#gemini_base_url').val(),
+            gemini_custom_model: $('#gemini_custom_model').val(),
             
             // ChatGPT配置
             chatgpt_api_key: $('#chatgpt_api_key').val(),
             chatgpt_model: $('#chatgpt_model').val(),
             chatgpt_base_url: $('#chatgpt_base_url').val() || 'https://api.openai.com',
+            chatgpt_custom_model: $('#chatgpt_custom_model').val(),
             
-            // Gemini配置
-            gemini_api_key: $('#gemini_api_key').val(),
-            gemini_model: $('#gemini_model').val(),
+            // 文心一言配置
+            wenxin_api_key: $('#wenxin_api_key').val(),
+            wenxin_model: $('#wenxin_model').val(),
+            wenxin_base_url: $('#wenxin_base_url').val(),
+            wenxin_custom_model: $('#wenxin_custom_model').val(),
             
             // 豆包配置
             doubao_api_key: $('#doubao_api_key').val(),
@@ -397,6 +427,8 @@ jQuery(document).ready(function($) {
             // 通义千问配置
             tongyi_api_key: $('#tongyi_api_key').val(),
             tongyi_model: $('#tongyi_model').val(),
+            tongyi_base_url: $('#tongyi_base_url').val(),
+            tongyi_custom_model: $('#tongyi_custom_model').val(),
             
             // 摘要设置
             ai_summary_path: $('input[name="ai_summary_path"]:checked').val(),

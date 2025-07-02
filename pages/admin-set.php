@@ -50,6 +50,88 @@
         <!-- AI配置 -->
         <div class="tab-content" id="ai-config-tab">
             <div class="ai-providers">
+                <!-- Gemini配置 -->
+                <div class="provider-card collapsed">
+                    <div class="provider-header">
+                        <img src="<?php echo ai_summary\Config::$img_url; ?>/gemini.svg" alt="Gemini" class="provider-icon">
+                        <h3>Google Gemini</h3>
+                        <span class="provider-status" id="gemini-status">未配置</span>
+                        <div class="provider-toggle">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="provider-config">
+                        <div class="input-group">
+                            <label>API Key</label>
+                            <input type="text" id="gemini_api_key" placeholder="请输入Google Gemini API Key">
+                            <p class="input-desc">在 <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a> 获取</p>
+                        </div>
+                        <div class="input-group">
+                            <label>API地址 (可选)</label>
+                            <input type="text" id="gemini_base_url" placeholder="默认: https://generativelanguage.googleapis.com">
+                            <p class="input-desc">支持自定义API地址，如代理服务或第三方兼容接口</p>
+                        </div>
+                        <div class="input-group">
+                            <label>模型选择</label>
+                            <select id="gemini_model">
+                                <option value="gemini-2.0-flash">Gemini 2.0 Flash - 最新2.0版本，速度最快</option>
+                                <option value="gemini-1.5-pro">Gemini 1.5 Pro - 1.5版本，功能全面</option>
+                                <option value="gemini-pro">Gemini Pro - 经典版本</option>
+                                <option value="gemini-pro-vision">Gemini Pro Vision - 支持图像输入</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>自定义模型名称 (可选)</label>
+                            <input type="text" id="gemini_custom_model" placeholder="输入自定义模型名称，优先于上方选择">
+                            <p class="input-desc">如果填写自定义模型名称，将优先使用此名称而非上方选择的模型</p>
+                        </div>
+                        <button class="btn-test">测试连接</button>
+                    </div>
+                </div>
+
+                <!-- ChatGPT配置 -->
+                <div class="provider-card collapsed">
+                    <div class="provider-header">
+                        <img src="<?php echo ai_summary\Config::$img_url; ?>/openai.svg" alt="ChatGPT" class="provider-icon">
+                        <h3>ChatGPT</h3>
+                        <span class="provider-status" id="chatgpt-status">未配置</span>
+                        <div class="provider-toggle">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="provider-config">
+                        <div class="input-group">
+                            <label>API Key</label>
+                            <input type="text" id="chatgpt_api_key" placeholder="请输入OpenAI API Key">
+                            <p class="input-desc">在 <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a> 获取</p>
+                        </div>
+                        <div class="input-group">
+                            <label>API地址 (可选)</label>
+                            <input type="text" id="chatgpt_base_url" placeholder="默认: https://api.openai.com">
+                            <p class="input-desc">支持第三方代理和镜像站，如代理服务</p>
+                        </div>
+                        <div class="input-group">
+                            <label>模型选择</label>
+                            <select id="chatgpt_model">
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo - 速度快，成本低</option>
+                                <option value="gpt-3.5-turbo-16k">GPT-3.5 Turbo 16K - 支持更长上下文</option>
+                                <option value="gpt-4">GPT-4 - 最高质量</option>
+                                <option value="gpt-4-turbo-preview">GPT-4 Turbo - 最新模型</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>自定义模型名称 (可选)</label>
+                            <input type="text" id="chatgpt_custom_model" placeholder="输入自定义模型名称，优先于上方选择">
+                            <p class="input-desc">如果填写自定义模型名称，将优先使用此名称而非上方选择的模型</p>
+                        </div>
+                        <button class="btn-test">测试连接</button>
+                    </div>
+                </div>
+
                 <!-- 文心一言配置 -->
                 <div class="provider-card collapsed">
                     <div class="provider-header">
@@ -66,7 +148,12 @@
                         <div class="input-group">
                             <label>API Key</label>
                             <input type="text" id="wenxin_api_key" placeholder="请输入百度千帆API Key">
-                            <p class="input-desc">在百度智能云千帆大模型平台获取</p>
+                            <p class="input-desc">在 <a href="https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application" target="_blank">百度千帆平台</a> 获取</p>
+                        </div>
+                        <div class="input-group">
+                            <label>API地址 (可选)</label>
+                            <input type="text" id="wenxin_base_url" placeholder="默认: https://qianfan.baidubce.com">
+                            <p class="input-desc">支持自定义API地址，如代理服务或第三方兼容接口</p>
                         </div>
                         <div class="input-group">
                             <label>模型选择</label>
@@ -80,70 +167,10 @@
                             </select>
                             <p class="input-desc">使用最新千帆v2统一API，兼容OpenAI格式</p>
                         </div>
-                        
-                        <button class="btn-test">测试连接</button>
-                    </div>
-                </div>
-
-                                <!-- ChatGPT配置 -->
-                <div class="provider-card collapsed">
-                    <div class="provider-header">
-                        <img src="<?php echo ai_summary\Config::$img_url; ?>/openai.svg" alt="ChatGPT" class="provider-icon">
-                        <h3>ChatGPT</h3>
-                        <span class="provider-status" id="chatgpt-status">未配置</span>
-                        <div class="provider-toggle">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M7 10l5 5 5-5z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="provider-config">
                         <div class="input-group">
-                            <label>API Key</label>
-                            <input type="text" id="chatgpt_api_key" placeholder="请输入OpenAI API Key">
-                        </div>
-                        <div class="input-group">
-                            <label>API地址 (可选)</label>
-                            <input type="text" id="chatgpt_base_url" placeholder="默认: https://api.openai.com">
-                        </div>
-                        <div class="input-group">
-                            <label>模型选择</label>
-                            <select id="chatgpt_model">
-                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo - 速度快，成本低</option>
-                                <option value="gpt-3.5-turbo-16k">GPT-3.5 Turbo 16K - 支持更长上下文</option>
-                                <option value="gpt-4">GPT-4 - 最高质量</option>
-                                <option value="gpt-4-turbo-preview">GPT-4 Turbo - 最新模型</option>
-                            </select>
-                        </div>
-                        <button class="btn-test">测试连接</button>
-                    </div>
-                </div>
-
-                <!-- Gemini配置 -->
-                <div class="provider-card collapsed">
-                    <div class="provider-header">
-                    <img src="<?php echo ai_summary\Config::$img_url; ?>/gemini.svg" alt="Gemini" class="provider-icon">
-                        <h3>Google Gemini</h3>
-                        <span class="provider-status" id="gemini-status">未配置</span>
-                        <div class="provider-toggle">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M7 10l5 5 5-5z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="provider-config">
-                        <div class="input-group">
-                            <label>API Key</label>
-                            <input type="text" id="gemini_api_key" placeholder="请输入Google Gemini API Key">
-                        </div>
-                        <div class="input-group">
-                            <label>模型选择</label>
-                            <select id="gemini_model">
-                                <option value="gemini-2.0-flash">Gemini 2.0 Flash - 最新2.0版本，速度最快</option>
-                                <option value="gemini-1.5-pro">Gemini 1.5 Pro - 1.5版本，功能全面</option>
-                                <option value="gemini-pro">Gemini Pro - 经典版本</option>
-                                <option value="gemini-pro-vision">Gemini Pro Vision - 支持图像输入</option>
-                            </select>
+                            <label>自定义模型名称 (可选)</label>
+                            <input type="text" id="wenxin_custom_model" placeholder="输入自定义模型名称，优先于上方选择">
+                            <p class="input-desc">如果填写自定义模型名称，将优先使用此名称而非上方选择的模型</p>
                         </div>
                         <button class="btn-test">测试连接</button>
                     </div>
@@ -165,11 +192,12 @@
                         <div class="input-group">
                             <label>API Key</label>
                             <input type="text" id="doubao_api_key" placeholder="请输入豆包API Key">
-                            <p class="input-desc">在火山方舟平台获取</p>
+                            <p class="input-desc">在 <a href="https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey" target="_blank">火山方舟平台</a> 获取</p>
                         </div>
                         <div class="input-group">
                             <label>API地址 (可选)</label>
                             <input type="text" id="doubao_base_url" placeholder="默认: https://ark.cn-beijing.volces.com/api/v3">
+                            <p class="input-desc">支持自定义API地址，如代理服务或第三方兼容接口</p>
                         </div>
                         <div class="input-group">
                             <label>模型选择</label>
@@ -205,7 +233,12 @@
                         <div class="input-group">
                             <label>API Key</label>
                             <input type="text" id="tongyi_api_key" placeholder="请输入阿里云百炼API Key">
-                            <p class="input-desc">在阿里云百炼平台获取</p>
+                            <p class="input-desc">在 <a href="https://bailian.console.aliyun.com/apikey" target="_blank">阿里云百炼平台</a> 获取</p>
+                        </div>
+                        <div class="input-group">
+                            <label>API地址 (可选)</label>
+                            <input type="text" id="tongyi_base_url" placeholder="默认: https://dashscope.aliyuncs.com">
+                            <p class="input-desc">支持自定义API地址，如代理服务或第三方兼容接口</p>
                         </div>
                         <div class="input-group">
                             <label>模型选择</label>
@@ -215,6 +248,11 @@
                                 <option value="qwen-plus">qwen-plus - 通用增强版</option>
                                 <option value="qwen-max">qwen-max - 旗舰版</option>
                             </select>
+                        </div>
+                        <div class="input-group">
+                            <label>自定义模型名称 (可选)</label>
+                            <input type="text" id="tongyi_custom_model" placeholder="输入自定义模型名称，优先于上方选择">
+                            <p class="input-desc">如果填写自定义模型名称，将优先使用此名称而非上方选择的模型</p>
                         </div>
                         <button class="btn-test">测试连接</button>
                     </div>
@@ -231,9 +269,9 @@
                     </div>
                     <div class="radio-group">
                         <label class="radio-option">
-                            <input type="radio" name="ai_summary_path" value="wenxin">
+                            <input type="radio" name="ai_summary_path" value="gemini">
                             <span class="radio-custom"></span>
-                            文心一言
+                            Gemini
                         </label>
                         <label class="radio-option">
                             <input type="radio" name="ai_summary_path" value="chatgpt">
@@ -241,9 +279,9 @@
                             ChatGPT
                         </label>
                         <label class="radio-option">
-                            <input type="radio" name="ai_summary_path" value="gemini">
+                            <input type="radio" name="ai_summary_path" value="wenxin">
                             <span class="radio-custom"></span>
-                            Gemini
+                            文心一言
                         </label>
                         <label class="radio-option">
                             <input type="radio" name="ai_summary_path" value="doubao">
@@ -291,9 +329,9 @@
                     </div>
                     <div class="radio-group">
                         <label class="radio-option">
-                            <input type="radio" name="ai_seo_path" value="wenxin">
+                            <input type="radio" name="ai_seo_path" value="gemini">
                             <span class="radio-custom"></span>
-                            文心一言
+                            Gemini
                         </label>
                         <label class="radio-option">
                             <input type="radio" name="ai_seo_path" value="chatgpt">
@@ -301,9 +339,9 @@
                             ChatGPT
                         </label>
                         <label class="radio-option">
-                            <input type="radio" name="ai_seo_path" value="gemini">
+                            <input type="radio" name="ai_seo_path" value="wenxin">
                             <span class="radio-custom"></span>
-                            Gemini
+                            文心一言
                         </label>
                         <label class="radio-option">
                             <input type="radio" name="ai_seo_path" value="doubao">

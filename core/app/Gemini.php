@@ -4,9 +4,20 @@ namespace ai_summary;
 
 class Gemini
 {
-    static function chat($model, $messages, $api_key, $system = '', $temperature = 0.7)
+    static function chat($model, $messages, $api_key, $system = '', $temperature = 0.7, $base_url = '', $custom_model = '')
     {
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$api_key}";
+        // 优先使用自定义模型名称
+        if (!empty($custom_model)) {
+            $model = $custom_model;
+        }
+        
+        // 处理自定义API地址
+        if (empty($base_url)) {
+            $base_url = 'https://generativelanguage.googleapis.com';
+        }
+        $base_url = rtrim($base_url, '/');
+        
+        $url = "{$base_url}/v1beta/models/{$model}:generateContent?key={$api_key}";
         
         $contents = [];
         
