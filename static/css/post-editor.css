@@ -10,6 +10,12 @@
     border-radius: 4px;
     padding: 15px;
     background: #fafafa;
+    transition: all 0.3s ease;
+}
+
+.ai-section:hover {
+    border-color: #0073aa;
+    box-shadow: 0 2px 4px rgba(0, 115, 170, 0.1);
 }
 
 .ai-section:last-child {
@@ -24,6 +30,28 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.ai-section h4:hover {
+    background: #e6f3ff;
+    color: #0073aa;
+}
+
+.ai-section h4:after {
+    content: '\f140';
+    font-family: dashicons;
+    font-size: 16px;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.ai-section.collapsed h4:after {
+    transform: rotate(-90deg);
 }
 
 .ai-section h4 .dashicons {
@@ -195,4 +223,12 @@
     .seo-field {
         margin-bottom: 15px;
     }
+}
+
+.ai-section.collapsed {
+    border-color: #ccc;
+}
+
+.ai-section.collapsed .ai-content-area {
+    display: none;
 } 

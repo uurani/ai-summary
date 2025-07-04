@@ -77,6 +77,32 @@ jQuery(document).ready(function($) {
 
     // 绑定事件
     function bindEvents() {
+        // AI面板折叠展开功能
+        $('.ai-section h4').off('click').on('click', function() {
+            const section = $(this).closest('.ai-section');
+            const contentArea = section.find('.ai-content-area');
+            
+            // 切换折叠状态
+            section.toggleClass('collapsed');
+            
+            // 滑动动画
+            contentArea.slideToggle(300);
+            
+            // 保存状态到localStorage
+            const sectionId = section.index();
+            const isCollapsed = section.hasClass('collapsed');
+            localStorage.setItem(`ai-section-${sectionId}-collapsed`, isCollapsed);
+        });
+        
+        // 恢复之前保存的折叠状态
+        $('.ai-section').each(function(index) {
+            const saved = localStorage.getItem(`ai-section-${index}-collapsed`);
+            if (saved === 'true') {
+                $(this).addClass('collapsed');
+                $(this).find('.ai-content-area').hide();
+            }
+        });
+        
         // 生成摘要
         $('#generate-summary').on('click', function() {
             generateSummary();
