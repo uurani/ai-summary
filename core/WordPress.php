@@ -16,8 +16,9 @@ class WordPress
 
     static function echoJson($name, $data)
     {
-        $data = json_encode($data);
-        echo "<script>let {$name}=JSON.parse('$data')</script>";
+        // 使用wp_add_inline_script来安全地定义全局变量
+        $json_data = wp_json_encode($data);
+        wp_add_inline_script('ai-summary-frontend', "window.{$name} = {$json_data};", 'before');
     }
 
     static function loadCss($name, $file_name, $local = true)

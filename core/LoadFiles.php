@@ -64,9 +64,9 @@ class LoadFiles
                             $data['other_link'] = get_home_url();
                         }
                     }
-                    WordPress::echoJson('ai_summary', $data);
                     WordPress::loadCss('ai-summary-frontend', 'summary.css');
                     WordPress::loadJS('ai-summary-frontend', 'summary-frontend.js', true, [], true);
+                    WordPress::echoJson('ai_summary', $data);
                 }
             }
         }
