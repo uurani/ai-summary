@@ -1,0 +1,13 @@
+{
+  "code": 200,
+  "msg": "请求成功",
+  "data": {
+    "name": "ai-summary",
+    "key": "ai-summary",
+    "version": "1.1.4",
+    "software_url": "https://github.com/uurani/ai-summary",
+    "package_url": "https://github.com/uurani/ai-summary/archive/refs/tags/1.1.5.zip",
+    "author_package_url": "https://github.com/uurani/ai-summary/",
+    "password": ""
+  }
+}
