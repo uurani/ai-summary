@@ -24,7 +24,7 @@ class Config
     static function init()
     {
         self::$plugin_name = 'ai_summary';
-        self::$plugin_server_url = 'https://muxui.com/wp-json/api/v1/getAiSummary';
+        self::$plugin_server_url = 'https://raw.githubusercontent.com/uurani/ai-summary/refs/heads/master/core/info.json';
         self::$plugin_dir = WP_PLUGIN_DIR . '/ai-summary';
         self::$plugin_url = WP_PLUGIN_URL . '/ai-summary';
         if (is_ssl()) {
